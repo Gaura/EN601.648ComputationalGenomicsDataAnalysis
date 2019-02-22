@@ -20,18 +20,15 @@ phenotype = pd.read_csv(args.Y)
 output_file = args.output
 
 snp05 = [] #store snps >= 0.05 MAF
-
-for i in range(1,genotype.shape[1]):
-	counts = genotype.iloc[:,i].value_counts()
-	if len(counts) > 1:
-		freq = counts.iloc[1]/genotype.shape[0]
-		if(freq >= 0.05):
-			snp05.append(counts.name)
-
+for i in range(genotype.shape[1]):
+	freq = np.sum(genotype.iloc[:,i])/len(genotype.iloc[:,i])/2
+	maf = np.min([freq,1- freq])
+	if maf >= 0.05:
+		snp05.append(genotype.columns[i])
 g_subset = genotype[snp05] #subset of relevant snps
 y = phenotype.iloc[:,1].values
 intercept = np.repeat(int(1),len(y))
-
+print(snp05[9])
 pvalues = []
 for i in range(len(snp05)):
 	z = zip(intercept,g_subset.iloc[:,i].values)
