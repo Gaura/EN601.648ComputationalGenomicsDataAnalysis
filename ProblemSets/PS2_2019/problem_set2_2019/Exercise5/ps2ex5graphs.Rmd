@@ -1,0 +1,45 @@
+---
+title: "exercise5"
+author: "Gaurav"
+date: "March 11, 2019"
+output: html_document
+---
+
+```{r}
+genotype <- read.table('genotype.txt',sep='\t',header = T, row.names = 1)
+genotype = t(genotype)
+genotype <- as.data.frame(genotype)
+```
+
+```{r}
+cols <- paste0('SNP',c(8, 10, 20, 22, 35, 49, 56, 58, 63, 70, 79, 85, 100, 11, 12))
+library(dplyr)
+gtype <- genotype %>% select(cols)
+```
+
+
+```{r}
+phenotype <- read.table('phenotype.txt', sep = '\t', header = F, row.names = 1)
+breed <- read.table('breeds.txt', sep = '\t', header = F, row.names = 1)
+```
+
+```{r}
+df <- cbind(gtype,phenotype,breed)
+l <- length(cols)
+colnames(df)[l + 1] <- "weight"
+colnames(df)[l + 2] <- "breed"
+```
+
+```{r}
+library(ggplot2)
+df$breed <- as.factor(df$breed)
+splot <- ggplot(df, aes(x = SNP70, y = weight, color = breed)) + geom_point()
+splot
+```
+```{r}
+png("SNP63vsBreed.png")
+splot
+dev.off()
+```
+
+

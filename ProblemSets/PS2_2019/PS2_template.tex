@@ -1,0 +1,401 @@
+\documentclass[11pt]{article}
+%https://www.gradescope.com/help#help-center-item-answer-formatting-guide
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{url}
+\usepackage{wrapfig}
+\usepackage{color}
+\usepackage{marvosym}
+\usepackage{enumerate}
+\usepackage{subfigure}
+\usepackage{tikz}
+\usepackage[fleqn]{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref} 
+\usepackage[many]{tcolorbox}
+\usepackage{lipsum}
+\usepackage{float}
+\usepackage{trimclip}
+\usepackage{listings}
+\usepackage{environ}% http://ctan.org/pkg/environ
+\usepackage{wasysym}
+\usepackage{array}
+
+
+\oddsidemargin 0mm
+\evensidemargin 5mm
+\topmargin -20mm
+\textheight 240mm
+\textwidth 160mm
+
+\bgroup
+\def\arraystretch{1.5}
+\newcolumntype{x}[1]{>{\centering\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{z}[1]{>{\centering\arraybackslash}m{#1}}
+
+
+
+%Arguments are 1 - height, 2 - box title
+\newtcolorbox{textanswerbox}[2]{%
+ width=\textwidth,colback=white,colframe=blue!30!black,floatplacement=H,height=#1,title=#2,clip lower=true,before upper={\parindent0em}}
+ 
+ \newtcolorbox{eqanswerbox}[1]{%
+ width=#1,colback=white,colframe=black,floatplacement=H,height=3em,sharp corners=all,clip lower=true,before upper={\parindent0em}}
+ 
+ %Arguments are 1 - height, 2 - box title
+ \NewEnviron{answertext}[2]{
+ 	\noindent
+	\marginbox*{0pt 10pt}{
+  	\clipbox{0pt 0pt 0pt 0pt}{
+	\begin{textanswerbox}{#1}{#2}
+	\BODY
+	\end{textanswerbox}
+	}
+	}
+}
+
+%Arguments are 1 - height, 2 - box title, 3 - column definition
+ \NewEnviron{answertable}[3]{
+ 	\noindent
+	\marginbox*{0pt 10pt}{
+  	\clipbox{0pt 0pt 0pt 0pt}{
+	\begin{textanswerbox}{#1}{#2}
+		\vspace{-0.5cm}
+        		\begin{table}[H]
+        		\centering 
+        		\begin{tabular}{#3}
+        			\BODY
+        		\end{tabular}
+        		\end{table}
+	\end{textanswerbox}
+	}
+	}
+}
+
+ %Arguments are 1 - height, 2 - box title, 3 - title, 4- equation label, 5 - equation box width
+ \NewEnviron{answerequation}[5]{
+ 	\noindent
+	\marginbox*{0pt 10pt}{
+  	\clipbox{0pt 0pt 0pt 0pt}{
+	\begin{textanswerbox}{#1}{#2}
+		\vspace{-0.5cm}
+        		\begin{table}[H]
+        		\centering 
+		\renewcommand{\arraystretch}{0.5}% Tighter
+
+        		\begin{tabular}{#3}
+        			#4 =	&
+		  	\clipbox{0pt 0pt 0pt 0pt}{
+
+			\begin{eqanswerbox}{#5}
+				$\BODY$
+			\end{eqanswerbox}
+			} \\ 
+        		\end{tabular}
+        		\end{table}
+		
+	\end{textanswerbox}
+	}
+	}
+}
+
+ %Arguments are 1 - height, 2 - box title
+ \NewEnviron{answerderivation}[2]{
+ 	\noindent
+	\marginbox*{0pt 10pt}{
+  	\clipbox{0pt 0pt 0pt 0pt}{
+	\begin{textanswerbox}{#1}{#2}
+	\BODY
+	\end{textanswerbox}
+	}
+	}
+}
+
+\newcommand{\vwi}{{\bf w}_i}
+\newcommand{\vw}{{\bf w}}
+\newcommand{\vx}{{\bf x}}
+\newcommand{\vy}{{\bf y}}
+\newcommand{\vxi}{{\bf x}_i}
+\newcommand{\yi}{y_i}
+\newcommand{\vxj}{{\bf x}_j}
+\newcommand{\vxn}{{\bf x}_n}
+\newcommand{\yj}{y_j}
+\newcommand{\ai}{\alpha_i}
+\newcommand{\aj}{\alpha_j}
+\newcommand{\X}{{\bf X}}
+\newcommand{\Y}{{\bf Y}}
+\newcommand{\vz}{{\bf z}}
+\newcommand{\msigma}{{\bf \Sigma}}
+\newcommand{\vmu}{{\bf \mu}}
+\newcommand{\vmuk}{{\bf \mu}_k}
+\newcommand{\msigmak}{{\bf \Sigma}_k}
+\newcommand{\vmuj}{{\bf \mu}_j}
+\newcommand{\msigmaj}{{\bf \Sigma}_j}
+\newcommand{\pij}{\pi_j}
+\newcommand{\pik}{\pi_k}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\el}{\mathcal{L}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\vxij}{{\bf x}_{ij}}
+\newcommand{\vt}{{\bf t}}
+\newcommand{\yh}{\hat{y}}
+\newcommand{\code}[1]{{\footnotesize \tt #1}}
+\newcommand{\alphai}{\alpha_i}
+
+\newcommand{\Checked}{{\LARGE \XBox}}%
+\newcommand{\Unchecked}{{\LARGE \Square}}%
+\newcommand{\TextRequired}{{\textbf{Place Answer Here}}}%
+\newcommand{\EquationRequired}{\textbf{Type Equation Here}}%
+
+
+\newcommand{\answertextheight}{5cm}
+\newcommand{\answertableheight}{4cm}
+\newcommand{\answerequationheight}{2.5cm}
+\newcommand{\answerderivationheight}{14cm}
+
+\newcounter{QuestionCounter}
+\newcounter{SubQuestionCounter}[QuestionCounter]
+\setcounter{SubQuestionCounter}{1}
+
+\newcommand{\subquestiontitle}{Question~}
+\newcommand{\newquestion}{\stepcounter{QuestionCounter}\setcounter{SubQuestionCounter}{1}\newpage}
+\newcommand{\newsubquestion}{\stepcounter{SubQuestionCounter}}
+
+
+\lstset{language=[LaTeX]TeX,basicstyle=\ttfamily\bf}
+
+\pagestyle{myheadings}
+\markboth{Problem set 2}{Spring 2019 EN.601.448/648 Computational genomics: Problem set 2}
+
+
+\title{EN.601.448/648 Computational genomics: Problem set 2}
+\author{Gaurav Sharma (gsharm11)} 
+\date{Mar 9, 2019} 
+
+
+
+\begin{document}
+\maketitle
+\thispagestyle{headings}
+
+
+\newquestion
+
+\section*{\arabic{QuestionCounter}. Heritability (10 points) }
+{
+
+
+\renewcommand{\answertextheight}{2cm}
+\begin{answertable}{2.5cm}{\subquestiontitle 1)}{x{0.5cm}p{5cm}}
+\Checked &  True \\ 
+\Unhecked & False \\    
+\end{answertable}
+\newsubquestion
+
+\renewcommand{\answertextheight}{2cm}
+\begin{answertable}{2.5cm}{\subquestiontitle 2}{x{0.5cm}p{5cm}}
+\Checked &  True \\ 
+\Unchecked & False \\    
+\end{answertable}
+\newsubquestion
+
+\renewcommand{\answertextheight}{2cm}
+\begin{answertable}{2.5cm}{\subquestiontitle 3}{x{0.5cm}p{5cm}}
+\Unchecked &  True \\ 
+\Checked & False \\    
+\end{answertable}
+\newsubquestion
+
+\renewcommand{\answertextheight}{2cm}
+\begin{answertable}{2.5cm}{\subquestiontitle 4}{x{0.5cm}p{5cm}}
+\Unchecked &  True \\ 
+\Checked & False \\    
+\end{answertable}
+\newsubquestion
+
+\renewcommand{\answertextheight}{4cm}
+\begin{answertable}{5cm}{\subquestiontitle 5}{x{0.5cm}p{5cm}}
+\Checked &  a \\ 
+\Checked & b \\    
+\Checked & c \\  
+\Unchecked & d \\  
+\end{answertable}
+\newsubquestion
+}
+
+\newquestion
+
+
+
+\section*{\arabic{QuestionCounter}. Support Vector Machines (25 points)}
+{
+\renewcommand{\answertextheight}{4cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 2}
+linear kernel average accuracy $= 0.67954022988$\\
+Gaussian kernel average accuracy $= 0.7434482758$\\
+Polynomial kernel (d=3) average accuracy $= 0.70666666667$\\
+Polynomial kernel (d=6) average accuracy $= 0.51540229885$\\
+\end{answertext}
+\newsubquestion
+\renewcommand{\answertextheight}{2cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 3}
+Optimal kernel from part (2): $= Gaussian$\\
+Test prediction accuracy $= 0.731$\\
+\end{answertext}
+\newsubquestion
+}
+
+\newquestion
+
+
+
+
+\section*{\arabic{QuestionCounter}. PCA (30 points)}
+{
+\renewcommand{\answertextheight}{7cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 2}
+Percent variance explained of PC1: $= 7.461$\\
+Percent variance explained of PC2: $= 5.346$\\
+Percent variance explained of PC3: $= 3.970$\\
+Percent variance explained of PC4: $= 2.917$\\
+Percent variance explained of PC5: $= 2.595$\\
+
+Percent variance explained of PC6: $= 2.430$\\
+Percent variance explained of PC7: $= 2.227$\\
+Percent variance explained of PC8: $= 2.135$\\
+Percent variance explained of PC9: $= 2.018$\\
+Percent variance explained of PC10: $= 2.009$\\
+\end{answertext}
+\newsubquestion
+
+\renewcommand{\answertextheight}{10cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 3}
+\begin{center}
+ \includegraphics[scale=0.45]{3bpca.png}
+\end{center}
+\end{answertext}
+\newsubquestion
+
+\renewcommand{\answertextheight}{3cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 4}
+Number of PCs strongly correlated with at least one covariate: $= 3$\\
+\end{answertext}
+\newsubquestion
+
+
+\renewcommand{\answertextheight}{5cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 5a}
+Pearson correlation p-value between disease status and post mortem interval: $= -0.1624$ and $0.1696$\\
+Pearson correlation p-value between disease status and rma integrity number: $=-0.4594$ and $4.34e-05$\\
+Pearson correlation p-value between disease status and age: $= 0.3059$ and $0.0084$\\
+\end{answertext}
+\newsubquestion
+\renewcommand{\answertextheight}{9cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 5b}
+Based  on  these  correlation  p-values,  do  you  think  the  disease  status  maybe  confounded  by  a  covariate?   In  such  a  scenario,  do  you  think  that  the  principal components fully reflect the disease status of the samples?  If not, why not?\\ 
+Yes. No, the principal component may largely be representing the covariate which is possibly confounded with the disease status and therefore it becomes difficult to fully observe the disease status in the principal component.
+\end{answertext}
+\newsubquestion
+
+\renewcommand{\answertextheight}{9cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 6}
+Number of genes significant at $p < 0.05$ $= 3$\\
+Number of genes significant after multiple hypothesis testing $= 1$\\ 
+Do you think that these  results  are  affected  by  the  covariates  you  examined  in  the  previous  parts? \\
+Yes. Age for example, if confounded with the disease status, and if there are genes that differently express during different ages, the difference can be significant but not important in terms of disease.
+\end{answertext}
+\newsubquestion
+
+
+}
+
+\newquestion
+
+\section*{\arabic{QuestionCounter}. Clustering(35 points)}
+{
+
+\renewcommand{\answertextheight}{1cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 1-2. programming part}
+\end{answertext}
+\newsubquestion
+
+\renewcommand{\answertextheight}{2cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 3(a)}
+Number of free parameters $= k + kd = k(d+1)$
+\end{answertext}
+\newsubquestion
+
+\renewcommand{\answertextheight}{4cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 3(b) Equation of likelihood}
+Likelihood $= \prod_{i = 1}^{n}\sum_{k = 1}^{K}P(y_i = k,x_i|\theta)$\\
+$=\prod_{i = 1}^{n}\sum_{k = 1}^{K}\frac{1}{\sqrt{2\pi\sigma^2}}exp(\frac{-1}{2\sigma^2}||x_i - \mu_k||^2)$
+\end{answertext}
+\newsubquestion
+
+
+\renewcommand{\answertextheight}{10cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 3(c)}
+\begin{center}
+%   \includegraphics[scale=0.3]{plotRequired.png}
+\end{center}
+\end{answertext}
+\newsubquestion
+
+\renewcommand{\answertextheight}{2cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 3(d)}
+Which $K$ will you select: $5$
+\end{answertext}
+\newsubquestion
+
+
+\renewcommand{\answertextheight}{10cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 4}
+\begin{center}
+%   \includegraphics[scale=0.3]{plotRequired.png}
+\end{center}
+\end{answertext}
+\newsubquestion
+}
+
+\newquestion
+
+
+
+\section*{\arabic{QuestionCounter}. Linear Mixture Model (10 points)}
+{
+\renewcommand{\answertextheight}{4cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 1. linear regression}
+SNPs with BH-corrected p-value $< 0.05$:  SNPs 8, 20, 22, 35, 49, 56, 58, 70, 79, 85\\ Also, intercept was found to be significant\\
+\end{answertext}
+\newsubquestion
+
+\begin{answertext}{\answertextheight}{\subquestiontitle 2. linear mixture model}
+SNPs with BH-corrected p-value $< 0.05$:  SNPs 8, 10, 20, 22, 35, 49, 56, 58, 63, 70, 79, 85 \\
+Also, intercept was found to be significant\\
+\end{answertext}
+\newsubquestion
+
+\renewcommand{\answertextheight}{5cm}
+\begin{answertext}{\answertextheight}{}{\subquestiontitle 3. compare the results}
+Are the two results different:  Yes \\
+Reason: Linear mixed models become useful when there is a correlation structure within the data that is not explained by fixed effects. In our case, we have different breeds and there is a correlation structure within the samples from the same breed that is not explained by different SNPs. When we take into account that structure by introducing random effects using a linear mixed model we can potentially uncover more SNPs that are correlated with the phenotype since the correlation within the data has been taken care of to some extend by random effects.\\
+\end{answertext}
+\newsubquestion
+
+\renewcommand{\answertextheight}{10cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 4. plot}
+\begin{center}
+  \includegraphics[scale=0.4]{SNP10vsBreed.png}	
+  \includegraphics[scale=0.4]{SNP63vsBreed.png}
+\end{center}
+
+\end{answertext}
+\newquestion
+
+
+}
+
+
+
+
+\end{document}
