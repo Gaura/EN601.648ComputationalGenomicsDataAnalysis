@@ -1,0 +1,346 @@
+\documentclass[11pt]{article}
+%https://www.gradescope.com/help#help-center-item-answer-formatting-guide
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{url}
+\usepackage{wrapfig}
+\usepackage{color}
+\usepackage{marvosym}
+\usepackage{enumerate}
+\usepackage{subfigure}
+\usepackage{tikz}
+\usepackage[fleqn]{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref} 
+\usepackage[many]{tcolorbox}
+\usepackage{lipsum}
+\usepackage{float}
+\usepackage{trimclip}
+\usepackage{listings}
+\usepackage{environ}% http://ctan.org/pkg/environ
+\usepackage{wasysym}
+\usepackage{array}
+
+
+\oddsidemargin 0mm
+\evensidemargin 5mm
+\topmargin -20mm
+\textheight 240mm
+\textwidth 160mm
+
+\bgroup
+\def\arraystretch{1.5}
+\newcolumntype{x}[1]{>{\centering\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{z}[1]{>{\centering\arraybackslash}m{#1}}
+
+
+
+%Arguments are 1 - height, 2 - box title
+\newtcolorbox{textanswerbox}[2]{%
+ width=\textwidth,colback=white,colframe=blue!30!black,floatplacement=H,height=#1,title=#2,clip lower=true,before upper={\parindent0em}}
+ 
+ \newtcolorbox{eqanswerbox}[1]{%
+ width=#1,colback=white,colframe=black,floatplacement=H,height=3em,sharp corners=all,clip lower=true,before upper={\parindent0em}}
+ 
+ %Arguments are 1 - height, 2 - box title
+ \NewEnviron{answertext}[2]{
+ 	\noindent
+	\marginbox*{0pt 10pt}{
+  	\clipbox{0pt 0pt 0pt 0pt}{
+	\begin{textanswerbox}{#1}{#2}
+	\BODY
+	\end{textanswerbox}
+	}
+	}
+}
+
+%Arguments are 1 - height, 2 - box title, 3 - column definition
+ \NewEnviron{answertable}[3]{
+ 	\noindent
+	\marginbox*{0pt 10pt}{
+  	\clipbox{0pt 0pt 0pt 0pt}{
+	\begin{textanswerbox}{#1}{#2}
+		\vspace{-0.5cm}
+        		\begin{table}[H]
+        		\centering 
+        		\begin{tabular}{#3}
+        			\BODY
+        		\end{tabular}
+        		\end{table}
+	\end{textanswerbox}
+	}
+	}
+}
+
+ %Arguments are 1 - height, 2 - box title, 3 - title, 4- equation label, 5 - equation box width
+ \NewEnviron{answerequation}[5]{
+ 	\noindent
+	\marginbox*{0pt 10pt}{
+  	\clipbox{0pt 0pt 0pt 0pt}{
+	\begin{textanswerbox}{#1}{#2}
+		\vspace{-0.5cm}
+        		\begin{table}[H]
+        		\centering 
+		\renewcommand{\arraystretch}{0.5}% Tighter
+
+        		\begin{tabular}{#3}
+        			#4 =	&
+		  	\clipbox{0pt 0pt 0pt 0pt}{
+
+			\begin{eqanswerbox}{#5}
+				$\BODY$
+			\end{eqanswerbox}
+			} \\ 
+        		\end{tabular}
+        		\end{table}
+		
+	\end{textanswerbox}
+	}
+	}
+}
+
+ %Arguments are 1 - height, 2 - box title
+ \NewEnviron{answerderivation}[2]{
+ 	\noindent
+	\marginbox*{0pt 10pt}{
+  	\clipbox{0pt 0pt 0pt 0pt}{
+	\begin{textanswerbox}{#1}{#2}
+	\BODY
+	\end{textanswerbox}
+	}
+	}
+}
+
+\newcommand{\vwi}{{\bf w}_i}
+\newcommand{\vw}{{\bf w}}
+\newcommand{\vx}{{\bf x}}
+\newcommand{\vy}{{\bf y}}
+\newcommand{\vxi}{{\bf x}_i}
+\newcommand{\yi}{y_i}
+\newcommand{\vxj}{{\bf x}_j}
+\newcommand{\vxn}{{\bf x}_n}
+\newcommand{\yj}{y_j}
+\newcommand{\ai}{\alpha_i}
+\newcommand{\aj}{\alpha_j}
+\newcommand{\X}{{\bf X}}
+\newcommand{\Y}{{\bf Y}}
+\newcommand{\vz}{{\bf z}}
+\newcommand{\msigma}{{\bf \Sigma}}
+\newcommand{\vmu}{{\bf \mu}}
+\newcommand{\vmuk}{{\bf \mu}_k}
+\newcommand{\msigmak}{{\bf \Sigma}_k}
+\newcommand{\vmuj}{{\bf \mu}_j}
+\newcommand{\msigmaj}{{\bf \Sigma}_j}
+\newcommand{\pij}{\pi_j}
+\newcommand{\pik}{\pi_k}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\el}{\mathcal{L}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\vxij}{{\bf x}_{ij}}
+\newcommand{\vt}{{\bf t}}
+\newcommand{\yh}{\hat{y}}
+\newcommand{\code}[1]{{\footnotesize \tt #1}}
+\newcommand{\alphai}{\alpha_i}
+
+\newcommand{\Checked}{{\LARGE \XBox}}%
+\newcommand{\Unchecked}{{\LARGE \Square}}%
+\newcommand{\TextRequired}{{\textbf{Place Answer Here}}}%
+\newcommand{\EquationRequired}{\textbf{Type Equation Here}}%
+
+
+\newcommand{\answertextheight}{5cm}
+\newcommand{\answertableheight}{4cm}
+\newcommand{\answerequationheight}{2.5cm}
+\newcommand{\answerderivationheight}{14cm}
+
+\newcounter{QuestionCounter}
+\newcounter{SubQuestionCounter}[QuestionCounter]
+\setcounter{SubQuestionCounter}{1}
+
+\newcommand{\subquestiontitle}{Question~}
+\newcommand{\newquestion}{\stepcounter{QuestionCounter}\setcounter{SubQuestionCounter}{1}\newpage}
+\newcommand{\newsubquestion}{\stepcounter{SubQuestionCounter}}
+
+
+\lstset{language=[LaTeX]TeX,basicstyle=\ttfamily\bf}
+
+\pagestyle{myheadings}
+\markboth{Problem set 3}{Spring 2019 EN.601.448/648 Computational genomics: Problem set 4}
+
+
+\title{EN.601.448/648 Computational genomics: Problem set 4}
+\author{Gaurav Sharma (gsharm11)} 
+\date{} 
+
+
+
+\begin{document}
+\maketitle
+\thispagestyle{headings}
+
+
+\newquestion
+
+\section*{\arabic{QuestionCounter}. Haplotype Inference (10 points) }
+{
+
+\renewcommand{\answertextheight}{6cm}
+\begin{answertable}{5cm}{\subquestiontitle 1}{x{0.5cm}p{5cm}}
+\Unchecked &  Individual 1 \\ 
+\Checked & Individual 2 \\    
+\Checked & Individual 3 \\  
+\Unchecked & Individual 4 \\  
+\Unchecked & Individual 5 \\
+\end{answertable}
+\newsubquestion
+}
+
+\renewcommand{\answertextheight}{6cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 2}
+Individual 1: NA \\ 
+Individual 2: 00010 and 00011 \\ 
+Individual 3: 01000 and 01000 \\ 
+Individual 4: NA \\ 
+Individual 5: NA \\ 
+\end{answertext}
+
+\renewcommand{\answertextheight}{6cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 3}
+Individual 1: 11110 and 10110 \\ 
+Individual 2: NA \\ 
+Individual 3: NA \\ 
+Individual 4: 11110 and 01010 \\ 
+Individual 5: 00010 and 01000 \\ 
+\end{answertext}
+\newquestion
+
+
+\section*{\arabic{QuestionCounter}. Neural Network (6 points) }
+{
+
+\renewcommand{\answertextheight}{4cm}
+\begin{answertable}{5cm}{\subquestiontitle 1}{x{0.5cm}p{5cm}}
+\Unchecked &  a \\ 
+\Checked & b \\    
+\Checked & c \\  
+\Unchecked & d \\  
+\end{answertable}
+\newsubquestion
+
+
+\renewcommand{\answertextheight}{8cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 2 Short answers}
+\begin{enumerate}
+    \item Interpretability: Neural Networks are not interpretable so in genomics when we are trying to understand or at least get an idea of underlying causes, neural network models do not help much.
+    \item \TextRequired
+\end{enumerate}  
+\end{answertext}
+\newsubquestion
+
+}
+
+\newquestion
+
+
+
+\section*{\arabic{QuestionCounter}.Prediction of CpG islands (10 points) }
+{
+\renewcommand{\answertextheight}{14cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 1}
+Prob for T: \TextRequired \\ 
+Prob for T: \TextRequired \\ 
+Prob for A: \TextRequired \\ 
+Prob for C: \TextRequired \\ 
+Prob for G: \TextRequired \\ 
+Prob for C: \TextRequired \\ 
+Prob for G: \TextRequired \\ 
+Prob for C: \TextRequired \\ 
+Prob for G: \TextRequired \\ 
+Prob for C: \TextRequired \\ 
+Prob for G: \TextRequired \\ 
+Prob for C: \TextRequired \\ 
+Prob for G: \TextRequired \\ 
+Prob for A: \TextRequired \\ 
+Prob for T: \TextRequired \\ 
+Prob for A: \TextRequired \\ 
+Prob for T: \TextRequired \\ 
+Prob for T: \TextRequired \\ 
+Prob for T: \TextRequired \\ 
+\end{answertext}
+\newquestion
+
+
+}
+
+
+
+
+
+
+\section*{\arabic{QuestionCounter}. Probabilistic Graphical Models(10 points)}
+{
+
+\newsubquestion
+\renewcommand{\answertextheight}{10cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 1}
+\begin{align*}
+p(G_1=0.5, G_2=1, G_3=0, G_4=-1, G_5=2) =\TextRequired
+\end{align*}
+\end{answertext}
+
+
+\newsubquestion
+\renewcommand{\answertextheight}{10cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 2}
+\begin{align*}
+p(G_5=2 | G_1=0.5, G_2=1, G_3=0, G_4=-1) =\TextRequired
+\end{align*}
+\end{answertext}
+
+}
+
+
+\section*{\arabic{QuestionCounter}. EM and GMM(33 points)}
+{
+
+\newsubquestion
+\renewcommand{\answertextheight}{2cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 1}
+Coding part.
+\end{answertext}
+
+\newsubquestion
+\renewcommand{\answertextheight}{10cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 2}
+\begin{center}
+  % \includegraphics[scale=0.5]{plotRequired.png}
+\end{center}
+\end{answertext}
+\newsubquestion
+
+
+\newsubquestion
+\renewcommand{\answertextheight}{10cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 3}
+\begin{center}
+  % \includegraphics[scale=0.5]{plotRequired.png}
+\end{center}
+\end{answertext}
+\newsubquestion
+
+
+\newsubquestion
+\renewcommand{\answertextheight}{20cm}
+\begin{answertext}{\answertextheight}{\subquestiontitle 4}
+\TextRequired
+\end{answertext}
+\newsubquestion
+
+}
+
+
+
+
+
+
+\end{document}
